@@ -5,6 +5,8 @@ import dev.focusflow.enums.UserStatus;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Nationalized;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -12,10 +14,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
-
-    @Nationalized
-    @Column(nullable = false, unique = true)
-    private String username;
 
     private String password;
 
@@ -34,17 +32,19 @@ public class User {
 
     private boolean isDeleted;
 
+    private LocalDateTime createAt;
+
     public User() {
     }
 
-    public User(String username, String password, String email, String fullName, Role role, UserStatus userStatus, boolean isDeleted) {
-        this.username = username;
+    public User(String password, String email, String fullName, Role role, UserStatus userStatus, boolean isDeleted, LocalDateTime createAt) {
         this.password = password;
         this.email = email;
         this.fullName = fullName;
         this.role = role;
         this.userStatus = userStatus;
         this.isDeleted = isDeleted;
+        this.createAt = createAt;
     }
 
     public Long getUserId() {
@@ -55,13 +55,6 @@ public class User {
         this.userId = userId;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getPassword() {
         return password;
@@ -110,4 +103,13 @@ public class User {
     public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
     }
+
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(LocalDateTime createAt) {
+        this.createAt = createAt;
+    }
+
 }

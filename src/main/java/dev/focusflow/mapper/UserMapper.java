@@ -7,6 +7,8 @@ import dev.focusflow.enums.UserStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class UserMapper {
 
@@ -16,16 +18,15 @@ public class UserMapper {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     public User toEntity(UserRegisterDTO dto) {
         return new User(
-                dto.getUsername().trim(),
                 passwordEncoder.encode(dto.getPassword()),
                 dto.getEmail().toLowerCase().trim(),
                 dto.getFullName().trim(),
                 Role.User,
                 UserStatus.ACTIVE,
-                false
+                false,
+                LocalDateTime.now()
         );
     }
 }

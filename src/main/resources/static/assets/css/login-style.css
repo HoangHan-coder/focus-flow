@@ -1,0 +1,96 @@
+body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Center the auth card vertically */
+.auth-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 14px;
+    padding: 2.5rem 2rem;
+}
+
+.auth-logo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #f0f6fc;
+    margin-bottom: 0.3rem;
+}
+
+.auth-logo span {
+    color: #58a6ff;
+}
+
+/* Input override for dark feel */
+.form-control {
+    background-color: #0d1117;
+    border-color: #30363d;
+    color: #c9d1d9;
+}
+
+.form-control:focus {
+    background-color: #0d1117;
+    border-color: #58a6ff;
+    color: #f0f6fc;
+    box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15);
+}
+
+.form-control::placeholder {
+    color: #6e7681;
+}
+
+.divider {
+    border-color: #30363d;
+    margin: 1.5rem 0;
+}
+
+.navbar-brand span {
+    color: #58a6ff;
+}
+
+/* ── Registration success toast ── */
+#reg-toast-container {
+    position: fixed;
+    top: 5rem;
+    right: 1.25rem;
+    z-index: 1090;
+}
+#reg-toast {
+    min-width: 280px;
+    background: #0d1117;
+    border: 1px solid #238636;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.5);
+    color: #c9d1d9;
+    overflow: hidden;
+}
+#reg-toast .toast-header {
+    background: #1a3a2a;
+    border-bottom: 1px solid #238636;
+    color: #3fb950;
+    font-weight: 600;
+    font-size: .88rem;
+    padding: .6rem 1rem;
+}
+#reg-toast .toast-body {
+    font-size: .9rem;
+    padding: .75rem 1rem;
+    color: #c9d1d9;
+}
+#reg-toast .btn-close {
+    filter: invert(1) brightness(.7);
+}

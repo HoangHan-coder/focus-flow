@@ -2,324 +2,41 @@
 <html lang="en" data-bs-theme="dark">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tasks – FocusFlow</title>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Tasks – FocusFlow</title>
 
-  <!-- Bootstrap 5 CDN -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Bootstrap 5 -->
+    <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link th:href="@{/assets/css/bootstrap-icons.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/task-style.css}" rel="stylesheet">
 
-  <style>
-    body {
-      background-color: #0d1117;
-      color: #c9d1d9;
-    }
-
-    /* ── Sidebar (shared layout) ── */
-    .sidebar {
-      width: 240px;
-      min-height: 100vh;
-      background: #161b22;
-      border-right: 1px solid #30363d;
-      position: fixed;
-      top: 0;
-      left: 0;
-      padding-top: 1rem;
-      z-index: 100;
-    }
-
-    .sidebar-brand {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #f0f6fc;
-      padding: 0.5rem 1.25rem 1.25rem;
-      display: block;
-      text-decoration: none;
-      border-bottom: 1px solid #30363d;
-      margin-bottom: 0.75rem;
-    }
-
-    .sidebar-brand span {
-      color: #58a6ff;
-    }
-
-    .sidebar .nav-link {
-      color: #8b949e;
-      padding: 0.55rem 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      transition: background 0.15s, color 0.15s;
-    }
-
-    .sidebar .nav-link:hover,
-    .sidebar .nav-link.active {
-      color: #f0f6fc;
-      background: rgba(88, 166, 255, 0.1);
-      border-left: 3px solid #58a6ff;
-    }
-
-    .main-content {
-      margin-left: 240px;
-      padding: 1.5rem 2rem;
-    }
-
-    /* ── Table overrides ── */
-    .table {
-      --bs-table-bg: transparent;
-    }
-
-    .table thead th {
-      border-color: #30363d;
-      color: #8b949e;
-      font-size: 0.78rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .table tbody td {
-      border-color: #21262d;
-      vertical-align: middle;
-    }
-
-    .table tbody tr:hover td {
-      background: rgba(88, 166, 255, 0.04);
-    }
-
-    /* ── Form controls dark ── */
-    .form-control,
-    .form-select {
-      background-color: #0d1117;
-      border-color: #30363d;
-      color: #c9d1d9;
-    }
-
-    .form-control:focus,
-    .form-select:focus {
-      background-color: #0d1117;
-      border-color: #58a6ff;
-      color: #f0f6fc;
-      box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.15);
-    }
-
-    .form-control::placeholder {
-      color: #6e7681;
-    }
-
-    /* ── Modal dark ── */
-    .modal-content {
-      background: #161b22;
-      border: 1px solid #30363d;
-    }
-
-    /* ── Checklist section ── */
-    .checklist-section {
-      border-top: 1px solid #30363d;
-      padding-top: 1rem;
-      margin-top: 0.5rem;
-    }
-
-    .checklist-label {
-      font-size: 0.82rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #8b949e;
-      margin-bottom: 0.6rem;
-    }
-
-    .checklist-items {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-      margin-bottom: 0.75rem;
-      max-height: 220px;
-      overflow-y: auto;
-      padding-right: 2px;
-    }
-
-    .checklist-items:empty::after {
-      content: 'No checklist items yet. Add one below.';
-      font-size: 0.8rem;
-      color: #484f58;
-      font-style: italic;
-      display: block;
-      text-align: center;
-      padding: 0.5rem 0;
-    }
-
-    .checklist-item {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: #0d1117;
-      border: 1px solid #21262d;
-      border-radius: 6px;
-      padding: 0.4rem 0.6rem;
-      transition: border-color 0.15s;
-    }
-
-    .checklist-item:hover {
-      border-color: #30363d;
-    }
-
-    .checklist-item input[type="checkbox"] {
-      flex-shrink: 0;
-      width: 15px;
-      height: 15px;
-      accent-color: #58a6ff;
-      cursor: pointer;
-    }
-
-    .checklist-item-text {
-      flex: 1;
-      font-size: 0.85rem;
-      color: #c9d1d9;
-      background: transparent;
-      border: none;
-      outline: none;
-      padding: 0;
-      cursor: default;
-    }
-
-    .checklist-item-text.checked {
-      text-decoration: line-through;
-      color: #484f58;
-    }
-
-    .checklist-item-del {
-      flex-shrink: 0;
-      background: none;
-      border: none;
-      color: #484f58;
-      font-size: 0.75rem;
-      cursor: pointer;
-      padding: 0 2px;
-      line-height: 1;
-      border-radius: 3px;
-      transition: color 0.15s;
-    }
-
-    .checklist-item-del:hover {
-      color: #f85149;
-    }
-
-    .checklist-add-row {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .checklist-progress-bar {
-      height: 4px;
-      border-radius: 2px;
-      background: #21262d;
-      overflow: hidden;
-      margin-bottom: 0.5rem;
-    }
-
-    .checklist-progress-bar .bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #58a6ff, #3fb950);
-      transition: width 0.3s ease;
-      border-radius: 2px;
-    }
-
-    .checklist-count {
-      font-size: 0.75rem;
-      color: #8b949e;
-      margin-bottom: 0.5rem;
-    }
-
-    /* ── Table: checklist pill ── */
-    .checklist-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 0.7rem;
-      color: #8b949e;
-      background: #0d1117;
-      border: 1px solid #21262d;
-      border-radius: 10px;
-      padding: 1px 7px;
-      margin-top: 3px;
-    }
-
-    .checklist-pill .pill-bar {
-      width: 36px;
-      height: 3px;
-      background: #21262d;
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .checklist-pill .pill-fill {
-      height: 100%;
-      background: #58a6ff;
-      border-radius: 2px;
-    }
-
-    @media (max-width: 768px) {
-      .sidebar {
-        display: none;
-      }
-
-      .main-content {
-        margin-left: 0;
-      }
-    }
-  </style>
 </head>
 
 <body>
 
-  <!-- ════════════════════════════════════════
-       SIDEBAR
-  ════════════════════════════════════════ -->
-  <nav class="sidebar">
-    <a class="sidebar-brand" href="index.html">
-      <i class="bi bi-lightning-charge-fill text-warning me-1"></i>
-      Focus<span>Flow</span>
-    </a>
-    <ul class="nav flex-column">
-      <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="bi bi-grid-1x2"></i> Dashboard</a></li>
-      <li class="nav-item"><a href="tasks.html" class="nav-link active"><i class="bi bi-check2-square"></i> Tasks</a>
-      </li>
-      <li class="nav-item"><a href="pomodoro.html" class="nav-link"><i class="bi bi-alarm"></i> Pomodoro</a></li>
-      <li class="nav-item"><a href="analytics.html" class="nav-link"><i class="bi bi-bar-chart-line"></i> Analytics</a>
-      </li>
-      <li class="nav-item"><a href="settings.html" class="nav-link"><i class="bi bi-gear"></i> Settings</a></li>
-    </ul>
-
-    <div class="position-absolute bottom-0 w-100 p-3 border-top border-secondary">
-      <div class="d-flex align-items-center gap-2">
-        <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center"
-          style="width:34px;height:34px;font-size:0.85rem;font-weight:600;">A</div>
-        <div>
-          <div class="text-light small fw-semibold">Alice Dev</div>
-          <div class="text-secondary" style="font-size:0.72rem;">alice@example.com</div>
-        </div>
-      </div>
-    </div>
-  </nav>
+<!-- ════════════════════════════════════════
+     SIDEBAR
+════════════════════════════════════════ -->
+<nav th:replace="~{fragments/slidebar-user :: sidebar}"></nav>
 
 
-  <!-- ════════════════════════════════════════
-       MAIN CONTENT
-  ════════════════════════════════════════ -->
-  <main class="main-content">
+<!-- ════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════ -->
+<main class="main-content">
 
     <!-- Page Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <div>
-        <h1 class="fs-4 fw-bold mb-0">Tasks</h1>
-        <p class="text-secondary small mb-0">Manage your task backlog</p>
-      </div>
-      <!-- New Task: triggers modal -->
-      <button id="btn-new-task" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#newTaskModal">
-        <i class="bi bi-plus-lg me-1"></i>New Task
-      </button>
+        <div>
+            <h1 class="fs-4 fw-bold mb-0">Tasks</h1>
+            <p class="text-secondary small mb-0">Manage your task backlog</p>
+        </div>
+        <!-- New Task: triggers modal -->
+        <button id="btn-new-task" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#newTaskModal">
+            <i class="bi bi-plus-lg me-1"></i>New Task
+        </button>
     </div>
 
 
@@ -328,51 +45,51 @@
          (UI only – no backend call)
     ════════════════════════════ -->
     <div class="card bg-dark border-secondary mb-4">
-      <div class="card-body py-3">
-        <div class="row g-2 align-items-end">
+        <div class="card-body py-3">
+            <div class="row g-2 align-items-end">
 
-          <!-- Search -->
-          <div class="col-md-5">
-            <label for="search-tasks" class="form-label small text-secondary mb-1">Search</label>
-            <div class="input-group">
+                <!-- Search -->
+                <div class="col-md-5">
+                    <label for="search-tasks" class="form-label small text-secondary mb-1">Search</label>
+                    <div class="input-group">
               <span class="input-group-text bg-dark border-secondary text-secondary">
                 <i class="bi bi-search"></i>
               </span>
-              <input type="text" class="form-control" id="search-tasks" placeholder="Search tasks by title…" />
+                        <input type="text" class="form-control" id="search-tasks" placeholder="Search tasks by title…"/>
+                    </div>
+                </div>
+
+                <!-- Status filter -->
+                <div class="col-md-3">
+                    <label for="filter-status" class="form-label small text-secondary mb-1">Status</label>
+                    <select class="form-select" id="filter-status">
+                        <option value="">All Statuses</option>
+                        <option value="TODO">TODO</option>
+                        <option value="IN_PROGRESS">IN_PROGRESS</option>
+                        <option value="DONE">DONE</option>
+                    </select>
+                </div>
+
+                <!-- Sort -->
+                <div class="col-md-3">
+                    <label for="sort-tasks" class="form-label small text-secondary mb-1">Sort By</label>
+                    <select class="form-select" id="sort-tasks">
+                        <option value="deadline_asc">Deadline (Earliest)</option>
+                        <option value="deadline_desc">Deadline (Latest)</option>
+                        <option value="created_desc">Created (Newest)</option>
+                        <option value="created_asc">Created (Oldest)</option>
+                    </select>
+                </div>
+
+                <!-- Apply Button (UI only) -->
+                <div class="col-md-1">
+                    <button class="btn btn-outline-secondary w-100" id="btn-filter-apply">
+                        <i class="bi bi-funnel"></i>
+                    </button>
+                </div>
+
             </div>
-          </div>
-
-          <!-- Status filter -->
-          <div class="col-md-3">
-            <label for="filter-status" class="form-label small text-secondary mb-1">Status</label>
-            <select class="form-select" id="filter-status">
-              <option value="">All Statuses</option>
-              <option value="TODO">TODO</option>
-              <option value="IN_PROGRESS">IN_PROGRESS</option>
-              <option value="DONE">DONE</option>
-            </select>
-          </div>
-
-          <!-- Sort -->
-          <div class="col-md-3">
-            <label for="sort-tasks" class="form-label small text-secondary mb-1">Sort By</label>
-            <select class="form-select" id="sort-tasks">
-              <option value="deadline_asc">Deadline (Earliest)</option>
-              <option value="deadline_desc">Deadline (Latest)</option>
-              <option value="created_desc">Created (Newest)</option>
-              <option value="created_asc">Created (Oldest)</option>
-            </select>
-          </div>
-
-          <!-- Apply Button (UI only) -->
-          <div class="col-md-1">
-            <button class="btn btn-outline-secondary w-100" id="btn-filter-apply">
-              <i class="bi bi-funnel"></i>
-            </button>
-          </div>
-
         </div>
-      </div>
     </div>
 
 
@@ -392,183 +109,185 @@
            - deleted_at   DATETIME NULL  (soft delete)
     ════════════════════════════ -->
     <div class="card bg-dark border-secondary">
-      <div class="card-body p-0">
-        <div class="table-responsive">
-          <table class="table table-hover mb-0">
-            <thead>
-              <tr>
-                <th style="width:50px;">ID</th>
-                <th>Title</th>
-                <th style="width:130px;">Status</th>
-                <th style="width:120px;">Deadline</th>
-                <th style="width:130px;">Created At</th>
-                <th style="width:130px;">Completed At</th>
-                <th style="width:110px;">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                    <tr>
+                        <th style="width:50px;">ID</th>
+                        <th>Title</th>
+                        <th style="width:130px;">Status</th>
+                        <th style="width:120px;">Deadline</th>
+                        <th style="width:130px;">Created At</th>
+                        <th style="width:130px;">Completed At</th>
+                        <th style="width:110px;">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-              <!-- ── Task #1 ── -->
-              <tr id="task-row-1">
-                <td class="text-secondary small">#1</td>
-                <td>
-                  <div class="text-light fw-medium">Complete Java assignment</div>
-                  <div class="text-secondary" style="font-size:0.78rem;">Finish Lab 4 and submit via LMS</div>
-                  <span class="checklist-pill">
+                    <!-- ── Task #1 ── -->
+                    <tr id="task-row-1">
+                        <td class="text-secondary small">#1</td>
+                        <td>
+                            <div class="text-light fw-medium">Complete Java assignment</div>
+                            <div class="text-secondary" style="font-size:0.78rem;">Finish Lab 4 and submit via LMS</div>
+                            <span class="checklist-pill">
                     <i class="bi bi-ui-checks" style="font-size:0.65rem;"></i>
                     <span class="pill-bar"><span class="pill-fill" style="width:33%"></span></span>
                     1/3
                   </span>
-                </td>
-                <td><span class="badge bg-warning text-dark">IN_PROGRESS</span></td>
-                <td class="text-secondary small">2026-04-12</td>
-                <td class="text-secondary small">2026-04-10</td>
-                <td class="text-secondary small">—</td>
-                <td>
-                  <button class="btn btn-sm btn-outline-secondary me-1" title="Edit" data-bs-toggle="modal"
-                    data-bs-target="#editTaskModal">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger" title="Delete" data-bs-toggle="modal"
-                    data-bs-target="#deleteTaskModal">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </td>
-              </tr>
+                        </td>
+                        <td><span class="badge bg-warning text-dark">IN_PROGRESS</span></td>
+                        <td class="text-secondary small">2026-04-12</td>
+                        <td class="text-secondary small">2026-04-10</td>
+                        <td class="text-secondary small">—</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary me-1" title="Edit" data-bs-toggle="modal"
+                                    data-bs-target="#editTaskModal">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" title="Delete" data-bs-toggle="modal"
+                                    data-bs-target="#deleteTaskModal">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
 
-              <!-- ── Task #2 ── -->
-              <tr id="task-row-2">
-                <td class="text-secondary small">#2</td>
-                <td>
-                  <div class="text-light fw-medium">Study Discrete Math</div>
-                  <div class="text-secondary" style="font-size:0.78rem;">Chapters 4–6: Graph theory & logic</div>
-                </td>
-                <td><span class="badge bg-secondary">TODO</span></td>
-                <td class="text-secondary small">2026-04-15</td>
-                <td class="text-secondary small">2026-04-10</td>
-                <td class="text-secondary small">—</td>
-                <td>
-                  <button class="btn btn-sm btn-outline-secondary me-1" title="Edit" data-bs-toggle="modal"
-                    data-bs-target="#editTaskModal">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger" title="Delete" data-bs-toggle="modal"
-                    data-bs-target="#deleteTaskModal">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </td>
-              </tr>
+                    <!-- ── Task #2 ── -->
+                    <tr id="task-row-2">
+                        <td class="text-secondary small">#2</td>
+                        <td>
+                            <div class="text-light fw-medium">Study Discrete Math</div>
+                            <div class="text-secondary" style="font-size:0.78rem;">Chapters 4–6: Graph theory & logic
+                            </div>
+                        </td>
+                        <td><span class="badge bg-secondary">TODO</span></td>
+                        <td class="text-secondary small">2026-04-15</td>
+                        <td class="text-secondary small">2026-04-10</td>
+                        <td class="text-secondary small">—</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary me-1" title="Edit" data-bs-toggle="modal"
+                                    data-bs-target="#editTaskModal">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" title="Delete" data-bs-toggle="modal"
+                                    data-bs-target="#deleteTaskModal">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
 
-              <!-- ── Task #3 ── -->
-              <tr id="task-row-3">
-                <td class="text-secondary small">#3</td>
-                <td>
-                  <div class="text-light fw-medium">Push backend API</div>
-                  <div class="text-secondary" style="font-size:0.78rem;">Deploy auth endpoints to staging</div>
-                </td>
-                <td><span class="badge bg-success">DONE</span></td>
-                <td class="text-secondary small">2026-04-10</td>
-                <td class="text-secondary small">2026-04-09</td>
-                <td class="text-secondary small">2026-04-10 14:32</td>
-                <td>
-                  <button class="btn btn-sm btn-outline-secondary me-1" title="Edit" data-bs-toggle="modal"
-                    data-bs-target="#editTaskModal">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger" title="Delete" data-bs-toggle="modal"
-                    data-bs-target="#deleteTaskModal">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </td>
-              </tr>
+                    <!-- ── Task #3 ── -->
+                    <tr id="task-row-3">
+                        <td class="text-secondary small">#3</td>
+                        <td>
+                            <div class="text-light fw-medium">Push backend API</div>
+                            <div class="text-secondary" style="font-size:0.78rem;">Deploy auth endpoints to staging
+                            </div>
+                        </td>
+                        <td><span class="badge bg-success">DONE</span></td>
+                        <td class="text-secondary small">2026-04-10</td>
+                        <td class="text-secondary small">2026-04-09</td>
+                        <td class="text-secondary small">2026-04-10 14:32</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary me-1" title="Edit" data-bs-toggle="modal"
+                                    data-bs-target="#editTaskModal">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" title="Delete" data-bs-toggle="modal"
+                                    data-bs-target="#deleteTaskModal">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
 
-              <!-- ── Task #4 ── -->
-              <tr id="task-row-4">
-                <td class="text-secondary small">#4</td>
-                <td>
-                  <div class="text-light fw-medium">Write unit tests</div>
-                  <div class="text-secondary" style="font-size:0.78rem;">JUnit 5 tests for service layer</div>
-                </td>
-                <td><span class="badge bg-success">DONE</span></td>
-                <td class="text-secondary small">2026-04-10</td>
-                <td class="text-secondary small">2026-04-09</td>
-                <td class="text-secondary small">2026-04-10 16:00</td>
-                <td>
-                  <button class="btn btn-sm btn-outline-secondary me-1" title="Edit" data-bs-toggle="modal"
-                    data-bs-target="#editTaskModal">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger" title="Delete" data-bs-toggle="modal"
-                    data-bs-target="#deleteTaskModal">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </td>
-              </tr>
+                    <!-- ── Task #4 ── -->
+                    <tr id="task-row-4">
+                        <td class="text-secondary small">#4</td>
+                        <td>
+                            <div class="text-light fw-medium">Write unit tests</div>
+                            <div class="text-secondary" style="font-size:0.78rem;">JUnit 5 tests for service layer</div>
+                        </td>
+                        <td><span class="badge bg-success">DONE</span></td>
+                        <td class="text-secondary small">2026-04-10</td>
+                        <td class="text-secondary small">2026-04-09</td>
+                        <td class="text-secondary small">2026-04-10 16:00</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary me-1" title="Edit" data-bs-toggle="modal"
+                                    data-bs-target="#editTaskModal">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" title="Delete" data-bs-toggle="modal"
+                                    data-bs-target="#deleteTaskModal">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
 
-              <!-- ── Task #5 ── -->
-              <tr id="task-row-5">
-                <td class="text-secondary small">#5</td>
-                <td>
-                  <div class="text-light fw-medium">Review PR from teammates</div>
-                  <div class="text-secondary" style="font-size:0.78rem;">Review PR #42 on GitHub</div>
-                </td>
-                <td><span class="badge bg-secondary">TODO</span></td>
-                <td class="text-secondary small">2026-04-13</td>
-                <td class="text-secondary small">2026-04-10</td>
-                <td class="text-secondary small">—</td>
-                <td>
-                  <button class="btn btn-sm btn-outline-secondary me-1" title="Edit" data-bs-toggle="modal"
-                    data-bs-target="#editTaskModal">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger" title="Delete" data-bs-toggle="modal"
-                    data-bs-target="#deleteTaskModal">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </td>
-              </tr>
+                    <!-- ── Task #5 ── -->
+                    <tr id="task-row-5">
+                        <td class="text-secondary small">#5</td>
+                        <td>
+                            <div class="text-light fw-medium">Review PR from teammates</div>
+                            <div class="text-secondary" style="font-size:0.78rem;">Review PR #42 on GitHub</div>
+                        </td>
+                        <td><span class="badge bg-secondary">TODO</span></td>
+                        <td class="text-secondary small">2026-04-13</td>
+                        <td class="text-secondary small">2026-04-10</td>
+                        <td class="text-secondary small">—</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary me-1" title="Edit" data-bs-toggle="modal"
+                                    data-bs-target="#editTaskModal">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" title="Delete" data-bs-toggle="modal"
+                                    data-bs-target="#deleteTaskModal">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
 
-              <!-- ── Task #6 ── -->
-              <tr id="task-row-6">
-                <td class="text-secondary small">#6</td>
-                <td>
-                  <div class="text-light fw-medium">Prepare presentation slides</div>
-                  <div class="text-secondary" style="font-size:0.78rem;">Sprint demo for Friday standup</div>
-                </td>
-                <td><span class="badge bg-warning text-dark">IN_PROGRESS</span></td>
-                <td class="text-secondary small">2026-04-11</td>
-                <td class="text-secondary small">2026-04-11</td>
-                <td class="text-secondary small">—</td>
-                <td>
-                  <button class="btn btn-sm btn-outline-secondary me-1" title="Edit" data-bs-toggle="modal"
-                    data-bs-target="#editTaskModal">
-                    <i class="bi bi-pencil"></i>
-                  </button>
-                  <button class="btn btn-sm btn-outline-danger" title="Delete" data-bs-toggle="modal"
-                    data-bs-target="#deleteTaskModal">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </td>
-              </tr>
+                    <!-- ── Task #6 ── -->
+                    <tr id="task-row-6">
+                        <td class="text-secondary small">#6</td>
+                        <td>
+                            <div class="text-light fw-medium">Prepare presentation slides</div>
+                            <div class="text-secondary" style="font-size:0.78rem;">Sprint demo for Friday standup</div>
+                        </td>
+                        <td><span class="badge bg-warning text-dark">IN_PROGRESS</span></td>
+                        <td class="text-secondary small">2026-04-11</td>
+                        <td class="text-secondary small">2026-04-11</td>
+                        <td class="text-secondary small">—</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-secondary me-1" title="Edit" data-bs-toggle="modal"
+                                    data-bs-target="#editTaskModal">
+                                <i class="bi bi-pencil"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" title="Delete" data-bs-toggle="modal"
+                                    data-bs-target="#deleteTaskModal">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
 
-            </tbody>
-          </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
-      </div>
 
-      <!-- Table Footer: pagination info -->
-      <div class="card-footer border-secondary d-flex justify-content-between align-items-center text-secondary small">
-        <span>Showing 6 of 6 tasks</span>
-        <nav>
-          <ul class="pagination pagination-sm mb-0">
-            <li class="page-item disabled"><a class="page-link bg-dark border-secondary text-secondary"
-                href="#">&laquo;</a></li>
-            <li class="page-item active"><a class="page-link bg-primary border-primary" href="#">1</a></li>
-            <li class="page-item disabled"><a class="page-link bg-dark border-secondary text-secondary"
-                href="#">&raquo;</a></li>
-          </ul>
-        </nav>
-      </div>
+        <!-- Table Footer: pagination info -->
+        <div class="card-footer border-secondary d-flex justify-content-between align-items-center text-secondary small">
+            <span>Showing 6 of 6 tasks</span>
+            <nav>
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item disabled"><a class="page-link bg-dark border-secondary text-secondary"
+                                                      href="#">&laquo;</a></li>
+                    <li class="page-item active"><a class="page-link bg-primary border-primary" href="#">1</a></li>
+                    <li class="page-item disabled"><a class="page-link bg-dark border-secondary text-secondary"
+                                                      href="#">&raquo;</a></li>
+                </ul>
+            </nav>
+        </div>
     </div>
 
 
@@ -578,97 +297,101 @@
          Body also includes: checklist[]  → task_checklist_items table
     ════════════════════════════ -->
     <div class="modal fade" id="newTaskModal" tabindex="-1" aria-labelledby="newTaskModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-          <div class="modal-header border-secondary">
-            <h5 class="modal-title" id="newTaskModalLabel">
-              <i class="bi bi-plus-circle me-2 text-primary"></i>New Task
-            </h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-            <form id="form-new-task" action="#" method="POST">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="newTaskModalLabel">
+                        <i class="bi bi-plus-circle me-2 text-primary"></i>New Task
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-new-task" action="#" method="POST">
 
-              <!-- ── Left column: core fields ── -->
-              <div class="row g-4">
-                <div class="col-md-6">
+                        <!-- ── Left column: core fields ── -->
+                        <div class="row g-4">
+                            <div class="col-md-6">
 
-                  <div class="mb-3">
-                    <label for="new-title" class="form-label">Title <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="new-title" name="title" placeholder="Enter task title"
-                      required />
-                  </div>
+                                <div class="mb-3">
+                                    <label for="new-title" class="form-label">Title <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="new-title" name="title"
+                                           placeholder="Enter task title"
+                                           required/>
+                                </div>
 
-                  <div class="mb-3">
-                    <label for="new-description" class="form-label">Description</label>
-                    <textarea class="form-control" id="new-description" name="description" rows="3"
-                      placeholder="Optional description"></textarea>
-                  </div>
+                                <div class="mb-3">
+                                    <label for="new-description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="new-description" name="description" rows="3"
+                                              placeholder="Optional description"></textarea>
+                                </div>
 
-                  <div class="row g-3">
-                    <div class="col-6">
-                      <label for="new-status" class="form-label">Status</label>
-                      <select class="form-select" id="new-status" name="status">
-                        <option value="TODO" selected>TODO</option>
-                        <option value="IN_PROGRESS">IN_PROGRESS</option>
-                        <option value="DONE">DONE</option>
-                      </select>
-                    </div>
-                    <div class="col-6">
-                      <label for="new-deadline" class="form-label">Deadline</label>
-                      <input type="date" class="form-control" id="new-deadline" name="deadline" />
-                    </div>
-                  </div>
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <label for="new-status" class="form-label">Status</label>
+                                        <select class="form-select" id="new-status" name="status">
+                                            <option value="TODO" selected>TODO</option>
+                                            <option value="IN_PROGRESS">IN_PROGRESS</option>
+                                            <option value="DONE">DONE</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="new-deadline" class="form-label">Deadline</label>
+                                        <input type="date" class="form-control" id="new-deadline" name="deadline"/>
+                                    </div>
+                                </div>
 
-                </div><!-- /col left -->
+                            </div><!-- /col left -->
 
-                <!-- ── Right column: checklist ── -->
-                <div class="col-md-6">
-                  <div class="checklist-section">
+                            <!-- ── Right column: checklist ── -->
+                            <div class="col-md-6">
+                                <div class="checklist-section">
 
-                    <div class="checklist-label">
-                      <i class="bi bi-ui-checks me-1"></i>Checklist
-                      <span id="new-checklist-count" class="fw-normal text-secondary ms-1"
-                        style="text-transform:none;font-size:0.78rem;"></span>
-                    </div>
+                                    <div class="checklist-label">
+                                        <i class="bi bi-ui-checks me-1"></i>Checklist
+                                        <span id="new-checklist-count" class="fw-normal text-secondary ms-1"
+                                              style="text-transform:none;font-size:0.78rem;"></span>
+                                    </div>
 
-                    <!-- Progress bar -->
-                    <div class="checklist-progress-bar" id="new-cl-progress-wrap" style="display:none;">
-                      <div class="bar-fill" id="new-cl-bar" style="width:0%"></div>
-                    </div>
+                                    <!-- Progress bar -->
+                                    <div class="checklist-progress-bar" id="new-cl-progress-wrap" style="display:none;">
+                                        <div class="bar-fill" id="new-cl-bar" style="width:0%"></div>
+                                    </div>
 
-                    <!-- Checklist items list -->
-                    <div class="checklist-items" id="new-checklist-items"></div>
+                                    <!-- Checklist items list -->
+                                    <div class="checklist-items" id="new-checklist-items"></div>
 
-                    <!-- Add new item row -->
-                    <div class="checklist-add-row">
-                      <input type="text" class="form-control form-control-sm" id="new-cl-input"
-                        placeholder="Add a checklist item…" maxlength="200" autocomplete="off" />
-                      <button type="button" class="btn btn-sm btn-outline-primary flex-shrink-0" id="new-cl-add-btn"
-                        title="Add item">
-                        <i class="bi bi-plus-lg"></i>
-                      </button>
-                    </div>
-                    <div class="text-secondary mt-2" style="font-size:0.75rem;">
-                      Press <kbd
-                        style="background:#21262d;border-color:#30363d;color:#c9d1d9;font-size:0.7rem;">Enter</kbd> or
-                      click <i class="bi bi-plus-lg"></i> to add. Max 20 items.
-                    </div>
+                                    <!-- Add new item row -->
+                                    <div class="checklist-add-row">
+                                        <input type="text" class="form-control form-control-sm" id="new-cl-input"
+                                               placeholder="Add a checklist item…" maxlength="200" autocomplete="off"/>
+                                        <button type="button" class="btn btn-sm btn-outline-primary flex-shrink-0"
+                                                id="new-cl-add-btn"
+                                                title="Add item">
+                                            <i class="bi bi-plus-lg"></i>
+                                        </button>
+                                    </div>
+                                    <div class="text-secondary mt-2" style="font-size:0.75rem;">
+                                        Press <kbd
+                                            style="background:#21262d;border-color:#30363d;color:#c9d1d9;font-size:0.7rem;">Enter</kbd>
+                                        or
+                                        click <i class="bi bi-plus-lg"></i> to add. Max 20 items.
+                                    </div>
 
-                  </div><!-- /checklist-section -->
-                </div><!-- /col right -->
-              </div><!-- /row -->
+                                </div><!-- /checklist-section -->
+                            </div><!-- /col right -->
+                        </div><!-- /row -->
 
-            </form>
-          </div>
-          <div class="modal-footer border-secondary">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" form="form-new-task" class="btn btn-primary" id="btn-create-task">
-              <i class="bi bi-plus-lg me-1"></i>Create Task
-            </button>
-          </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="form-new-task" class="btn btn-primary" id="btn-create-task">
+                        <i class="bi bi-plus-lg me-1"></i>Create Task
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
 
@@ -678,99 +401,102 @@
          Body also includes: checklist[]  → task_checklist_items table
     ════════════════════════════ -->
     <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content">
-          <div class="modal-header border-secondary">
-            <h5 class="modal-title" id="editTaskModalLabel">
-              <i class="bi bi-pencil me-2 text-warning"></i>Edit Task
-            </h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-            <form id="form-edit-task" action="#" method="PUT">
-              <input type="hidden" name="id" value="1" />
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="editTaskModalLabel">
+                        <i class="bi bi-pencil me-2 text-warning"></i>Edit Task
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form-edit-task" action="#" method="PUT">
+                        <input type="hidden" name="id" value="1"/>
 
-              <div class="row g-4">
+                        <div class="row g-4">
 
-                <!-- ── Left column: core fields ── -->
-                <div class="col-md-6">
+                            <!-- ── Left column: core fields ── -->
+                            <div class="col-md-6">
 
-                  <div class="mb-3">
-                    <label for="edit-title" class="form-label">Title <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" id="edit-title" name="title"
-                      value="Complete Java assignment" required />
-                  </div>
+                                <div class="mb-3">
+                                    <label for="edit-title" class="form-label">Title <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="edit-title" name="title"
+                                           value="Complete Java assignment" required/>
+                                </div>
 
-                  <div class="mb-3">
-                    <label for="edit-description" class="form-label">Description</label>
-                    <textarea class="form-control" id="edit-description" name="description"
-                      rows="3">Finish Lab 4 and submit via LMS</textarea>
-                  </div>
+                                <div class="mb-3">
+                                    <label for="edit-description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="edit-description" name="description"
+                                              rows="3">Finish Lab 4 and submit via LMS</textarea>
+                                </div>
 
-                  <div class="row g-3">
-                    <div class="col-6">
-                      <label for="edit-status" class="form-label">Status</label>
-                      <select class="form-select" id="edit-status" name="status">
-                        <option value="TODO">TODO</option>
-                        <option value="IN_PROGRESS" selected>IN_PROGRESS</option>
-                        <option value="DONE">DONE</option>
-                      </select>
-                    </div>
-                    <div class="col-6">
-                      <label for="edit-deadline" class="form-label">Deadline</label>
-                      <input type="date" class="form-control" id="edit-deadline" name="deadline" value="2026-04-12" />
-                    </div>
-                  </div>
+                                <div class="row g-3">
+                                    <div class="col-6">
+                                        <label for="edit-status" class="form-label">Status</label>
+                                        <select class="form-select" id="edit-status" name="status">
+                                            <option value="TODO">TODO</option>
+                                            <option value="IN_PROGRESS" selected>IN_PROGRESS</option>
+                                            <option value="DONE">DONE</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="edit-deadline" class="form-label">Deadline</label>
+                                        <input type="date" class="form-control" id="edit-deadline" name="deadline"
+                                               value="2026-04-12"/>
+                                    </div>
+                                </div>
 
-                </div><!-- /col left -->
+                            </div><!-- /col left -->
 
-                <!-- ── Right column: checklist ── -->
-                <div class="col-md-6">
-                  <div class="checklist-section">
+                            <!-- ── Right column: checklist ── -->
+                            <div class="col-md-6">
+                                <div class="checklist-section">
 
-                    <div class="checklist-label">
-                      <i class="bi bi-ui-checks me-1"></i>Checklist
-                      <span id="edit-checklist-count" class="fw-normal text-secondary ms-1"
-                        style="text-transform:none;font-size:0.78rem;"></span>
-                    </div>
+                                    <div class="checklist-label">
+                                        <i class="bi bi-ui-checks me-1"></i>Checklist
+                                        <span id="edit-checklist-count" class="fw-normal text-secondary ms-1"
+                                              style="text-transform:none;font-size:0.78rem;"></span>
+                                    </div>
 
-                    <!-- Progress bar -->
-                    <div class="checklist-progress-bar" id="edit-cl-progress-wrap" style="display:none;">
-                      <div class="bar-fill" id="edit-cl-bar" style="width:0%"></div>
-                    </div>
+                                    <!-- Progress bar -->
+                                    <div class="checklist-progress-bar" id="edit-cl-progress-wrap"
+                                         style="display:none;">
+                                        <div class="bar-fill" id="edit-cl-bar" style="width:0%"></div>
+                                    </div>
 
-                    <!-- Checklist items list -->
-                    <div class="checklist-items" id="edit-checklist-items"></div>
+                                    <!-- Checklist items list -->
+                                    <div class="checklist-items" id="edit-checklist-items"></div>
 
-                    <!-- Add new item row -->
-                    <div class="checklist-add-row">
-                      <input type="text" class="form-control form-control-sm" id="edit-cl-input"
-                        placeholder="Add a checklist item…" maxlength="200" autocomplete="off" />
-                      <button type="button" class="btn btn-sm btn-outline-warning flex-shrink-0" id="edit-cl-add-btn"
-                        title="Add item">
-                        <i class="bi bi-plus-lg"></i>
-                      </button>
-                    </div>
-                    <div class="text-secondary mt-2" style="font-size:0.75rem;">
-                      Press <kbd
-                        style="background:#21262d;border-color:#30363d;color:#c9d1d9;font-size:0.7rem;">Enter</kbd>
-                      or click <i class="bi bi-plus-lg"></i> to add. Max 20 items.
-                    </div>
+                                    <!-- Add new item row -->
+                                    <div class="checklist-add-row">
+                                        <input type="text" class="form-control form-control-sm" id="edit-cl-input"
+                                               placeholder="Add a checklist item…" maxlength="200" autocomplete="off"/>
+                                        <button type="button" class="btn btn-sm btn-outline-warning flex-shrink-0"
+                                                id="edit-cl-add-btn"
+                                                title="Add item">
+                                            <i class="bi bi-plus-lg"></i>
+                                        </button>
+                                    </div>
+                                    <div class="text-secondary mt-2" style="font-size:0.75rem;">
+                                        Press <kbd
+                                            style="background:#21262d;border-color:#30363d;color:#c9d1d9;font-size:0.7rem;">Enter</kbd>
+                                        or click <i class="bi bi-plus-lg"></i> to add. Max 20 items.
+                                    </div>
 
-                  </div><!-- /checklist-section -->
-                </div><!-- /col right -->
+                                </div><!-- /checklist-section -->
+                            </div><!-- /col right -->
 
-              </div><!-- /row -->
-            </form>
-          </div>
-          <div class="modal-footer border-secondary">
-            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="submit" form="form-edit-task" class="btn btn-warning text-dark">
-              <i class="bi bi-save me-1"></i>Save Changes
-            </button>
-          </div>
+                        </div><!-- /row -->
+                    </form>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" form="form-edit-task" class="btn btn-warning text-dark">
+                        <i class="bi bi-save me-1"></i>Save Changes
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
 
@@ -779,35 +505,36 @@
          DELETE /api/tasks/{id}  (soft-delete: sets deleted_at)
     ════════════════════════════ -->
     <div class="modal fade" id="deleteTaskModal" tabindex="-1" aria-labelledby="deleteTaskModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content">
-          <div class="modal-header border-secondary">
-            <h5 class="modal-title text-danger" id="deleteTaskModalLabel">
-              <i class="bi bi-exclamation-triangle me-2"></i>Delete Task
-            </h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body text-secondary">
-            Are you sure you want to delete <strong class="text-light">Complete Java assignment</strong>?
-            <br /><small class="text-secondary">(Sets <code>deleted_at</code> — soft delete)</small>
-          </div>
-          <div class="modal-footer border-secondary">
-            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-danger btn-sm">
-              <i class="bi bi-trash me-1"></i>Delete
-            </button>
-          </div>
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title text-danger" id="deleteTaskModalLabel">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Delete Task
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-secondary">
+                    Are you sure you want to delete <strong class="text-light">Complete Java assignment</strong>?
+                    <br/><small class="text-secondary">(Sets <code>deleted_at</code> — soft delete)</small>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancel
+                    </button>
+                    <button type="button" class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash me-1"></i>Delete
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
 
-  </main>
+</main>
 
-  <!-- Bootstrap 5 JS Bundle -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script>
+<script>
     /* ══════════════════════════════════════════════
        CHECKLIST LOGIC — shared factory
        Simulates: POST/PUT /api/tasks  body includes:
@@ -837,46 +564,46 @@
      * cfg.countEl  – count <span>
      */
     function makeChecklistManager(cfg) {
-      const { listEl, inputEl, addBtn, barEl, wrapEl, countEl } = cfg;
+        const {listEl, inputEl, addBtn, barEl, wrapEl, countEl} = cfg;
 
-      function updateProgress() {
-        const total = listEl.querySelectorAll('.checklist-item').length;
-        const done = listEl.querySelectorAll('input[type="checkbox"]:checked').length;
-        if (total === 0) {
-          wrapEl.style.display = 'none';
-          countEl.textContent = '';
-        } else {
-          wrapEl.style.display = 'block';
-          barEl.style.width = Math.round((done / total) * 100) + '%';
-          countEl.textContent = `(${done}/${total} done)`;
-        }
-      }
-
-      function appendItem(label, isDone, itemId) {
-        label = (label || '').trim();
-        if (!label) return;
-
-        if (listEl.querySelectorAll('.checklist-item').length >= MAX_ITEMS) {
-          inputEl.classList.add('is-invalid');
-          inputEl.placeholder = `Max ${MAX_ITEMS} items reached.`;
-          setTimeout(() => {
-            inputEl.classList.remove('is-invalid');
-            inputEl.placeholder = 'Add a checklist item…';
-          }, 2000);
-          return;
+        function updateProgress() {
+            const total = listEl.querySelectorAll('.checklist-item').length;
+            const done = listEl.querySelectorAll('input[type="checkbox"]:checked').length;
+            if (total === 0) {
+                wrapEl.style.display = 'none';
+                countEl.textContent = '';
+            } else {
+                wrapEl.style.display = 'block';
+                barEl.style.width = Math.round((done / total) * 100) + '%';
+                countEl.textContent = `(${done}/${total} done)`;
+            }
         }
 
-        const idx = itemId || ('new-' + Date.now());
-        const item = document.createElement('div');
-        item.className = 'checklist-item';
-        item.dataset.idx = idx;
+        function appendItem(label, isDone, itemId) {
+            label = (label || '').trim();
+            if (!label) return;
 
-        // Hidden field carries the DB id (null for newly added items)
-        const idField = itemId
-          ? `<input type="hidden" name="checklist_id[]" value="${itemId}" />`
-          : `<input type="hidden" name="checklist_id[]" value="" />`;
+            if (listEl.querySelectorAll('.checklist-item').length >= MAX_ITEMS) {
+                inputEl.classList.add('is-invalid');
+                inputEl.placeholder = `Max ${MAX_ITEMS} items reached.`;
+                setTimeout(() => {
+                    inputEl.classList.remove('is-invalid');
+                    inputEl.placeholder = 'Add a checklist item…';
+                }, 2000);
+                return;
+            }
 
-        item.innerHTML = `
+            const idx = itemId || ('new-' + Date.now());
+            const item = document.createElement('div');
+            item.className = 'checklist-item';
+            item.dataset.idx = idx;
+
+            // Hidden field carries the DB id (null for newly added items)
+            const idField = itemId
+                ? `<input type="hidden" name="checklist_id[]" value="${itemId}" />`
+                : `<input type="hidden" name="checklist_id[]" value="" />`;
+
+            item.innerHTML = `
           <input type="checkbox" id="cl-chk-${idx}" name="checklist_done[]" value="${idx}" ${isDone ? 'checked' : ''} />
           <label for="cl-chk-${idx}" class="checklist-item-text ${isDone ? 'checked' : ''}" title="${label}">${label}</label>
           <input type="hidden" name="checklist_label[]" value="${label.replace(/"/g, '&quot;')}" />
@@ -886,66 +613,69 @@
           </button>
         `;
 
-        item.querySelector('input[type="checkbox"]').addEventListener('change', function () {
-          item.querySelector('.checklist-item-text').classList.toggle('checked', this.checked);
-          updateProgress();
-        });
+            item.querySelector('input[type="checkbox"]').addEventListener('change', function () {
+                item.querySelector('.checklist-item-text').classList.toggle('checked', this.checked);
+                updateProgress();
+            });
 
-        item.querySelector('.checklist-item-del').addEventListener('click', () => {
-          item.style.transition = 'opacity 0.2s';
-          item.style.opacity = '0';
-          setTimeout(() => { item.remove(); updateProgress(); }, 200);
-        });
+            item.querySelector('.checklist-item-del').addEventListener('click', () => {
+                item.style.transition = 'opacity 0.2s';
+                item.style.opacity = '0';
+                setTimeout(() => {
+                    item.remove();
+                    updateProgress();
+                }, 200);
+            });
 
-        listEl.appendChild(item);
-        listEl.scrollTop = listEl.scrollHeight;
-        updateProgress();
-      }
-
-      function clearAll() {
-        listEl.innerHTML = '';
-        inputEl.value = '';
-        updateProgress();
-      }
-
-      addBtn.addEventListener('click', () => {
-        appendItem(inputEl.value);
-        inputEl.value = '';
-        inputEl.focus();
-      });
-
-      inputEl.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-          appendItem(inputEl.value);
-          inputEl.value = '';
-          inputEl.focus();
+            listEl.appendChild(item);
+            listEl.scrollTop = listEl.scrollHeight;
+            updateProgress();
         }
-      });
 
-      return { appendItem, clearAll, updateProgress };
+        function clearAll() {
+            listEl.innerHTML = '';
+            inputEl.value = '';
+            updateProgress();
+        }
+
+        addBtn.addEventListener('click', () => {
+            appendItem(inputEl.value);
+            inputEl.value = '';
+            inputEl.focus();
+        });
+
+        inputEl.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                appendItem(inputEl.value);
+                inputEl.value = '';
+                inputEl.focus();
+            }
+        });
+
+        return {appendItem, clearAll, updateProgress};
     }
 
     /* ── Wire up: NEW TASK modal ── */
     const newCL = makeChecklistManager({
-      listEl: document.getElementById('new-checklist-items'),
-      inputEl: document.getElementById('new-cl-input'),
-      addBtn: document.getElementById('new-cl-add-btn'),
-      barEl: document.getElementById('new-cl-bar'),
-      wrapEl: document.getElementById('new-cl-progress-wrap'),
-      countEl: document.getElementById('new-checklist-count'),
+        listEl: document.getElementById('new-checklist-items'),
+        inputEl: document.getElementById('new-cl-input'),
+        addBtn: document.getElementById('new-cl-add-btn'),
+        barEl: document.getElementById('new-cl-bar'),
+        wrapEl: document.getElementById('new-cl-progress-wrap'),
+        countEl: document.getElementById('new-checklist-count'),
     });
 
     document.getElementById('newTaskModal').addEventListener('hidden.bs.modal', () => newCL.clearAll());
 
     /* ── Wire up: EDIT TASK modal ── */
     const editCL = makeChecklistManager({
-      listEl: document.getElementById('edit-checklist-items'),
-      inputEl: document.getElementById('edit-cl-input'),
-      addBtn: document.getElementById('edit-cl-add-btn'),
-      barEl: document.getElementById('edit-cl-bar'),
-      wrapEl: document.getElementById('edit-cl-progress-wrap'),
-      countEl: document.getElementById('edit-checklist-count'),
+        listEl: document.getElementById('edit-checklist-items'),
+        inputEl: document.getElementById('edit-cl-input'),
+        addBtn: document.getElementById('edit-cl-add-btn'),
+        barEl: document.getElementById('edit-cl-bar'),
+        wrapEl: document.getElementById('edit-cl-progress-wrap'),
+        countEl: document.getElementById('edit-checklist-count'),
     });
 
     /**
@@ -954,19 +684,19 @@
      * Pre-populates the Edit modal when it opens.
      */
     const MOCK_CHECKLIST = [
-      { id: 101, label: 'Read assignment brief', isDone: true },
-      { id: 102, label: 'Implement TaskService class', isDone: false },
-      { id: 103, label: 'Submit via LMS portal', isDone: false },
+        {id: 101, label: 'Read assignment brief', isDone: true},
+        {id: 102, label: 'Implement TaskService class', isDone: false},
+        {id: 103, label: 'Submit via LMS portal', isDone: false},
     ];
 
     document.getElementById('editTaskModal').addEventListener('show.bs.modal', () => {
-      editCL.clearAll();
-      // Simulate loading existing checklist items from the server
-      MOCK_CHECKLIST.forEach(ci => editCL.appendItem(ci.label, ci.isDone, ci.id));
+        editCL.clearAll();
+        // Simulate loading existing checklist items from the server
+        MOCK_CHECKLIST.forEach(ci => editCL.appendItem(ci.label, ci.isDone, ci.id));
     });
 
     document.getElementById('editTaskModal').addEventListener('hidden.bs.modal', () => editCL.clearAll());
-  </script>
+</script>
 </body>
 
 </html>
