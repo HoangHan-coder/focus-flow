@@ -25,7 +25,6 @@ public class UserMapper {
                 dto.getFullName().trim(),
                 Role.User,
                 UserStatus.ACTIVE,
-                false,
                 LocalDateTime.now()
         );
     }

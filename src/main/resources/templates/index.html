@@ -9,78 +9,8 @@
     <link th:href="@{/assets/css/bootstrap.min.css}" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link th:href="@{/assets/css/bootstrap-icons.css}" rel="stylesheet">
-    <style>
-        /* ── Hero section gradient ── */
-        .hero-section {
-            background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
-            border-bottom: 1px solid #30363d;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-        }
+    <link th:href="@{/assets/css/index-style.css}" rel="stylesheet">
 
-        .hero-badge {
-            background-color: rgba(88, 166, 255, 0.15);
-            color: #58a6ff;
-            border: 1px solid rgba(88, 166, 255, 0.3);
-            border-radius: 20px;
-            padding: 4px 14px;
-            font-size: 0.8rem;
-            display: inline-block;
-            margin-bottom: 1.2rem;
-        }
-
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 700;
-            line-height: 1.2;
-            letter-spacing: -1px;
-        }
-
-        .hero-title span {
-            color: #58a6ff;
-        }
-
-        /* ── Feature cards ── */
-        .feature-card {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            transition: border-color 0.2s, transform 0.2s;
-        }
-
-        .feature-card:hover {
-            border-color: #58a6ff;
-            transform: translateY(-4px);
-        }
-
-        .feature-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-        }
-
-        /* ── Stat strip ── */
-        .stat-strip {
-            background: #161b22;
-            border-top: 1px solid #30363d;
-            border-bottom: 1px solid #30363d;
-        }
-
-        body {
-            background-color: #0d1117;
-            color: #c9d1d9;
-        }
-
-        .navbar-brand span {
-            color: #58a6ff;
-        }
-    </style>
 </head>
 <body>
 
@@ -114,10 +44,10 @@
 
                 <!-- CTA Buttons -->
                 <div class="d-flex flex-wrap gap-3">
-                    <a href="register.html" id="cta-get-started" class="btn btn-primary btn-lg px-4">
+                    <a href="auth/register.html" id="cta-get-started" class="btn btn-primary btn-lg px-4">
                         <i class="bi bi-rocket-takeoff me-2"></i>Get Started — It's Free
                     </a>
-                    <a href="dashboard.html" id="cta-demo" class="btn btn-outline-secondary btn-lg px-4">
+                    <a href="user/dashboard.html" id="cta-demo" class="btn btn-outline-secondary btn-lg px-4">
                         <i class="bi bi-play-circle me-2"></i>View Demo
                     </a>
                 </div>
@@ -325,7 +255,7 @@
     <div class="container text-center py-3">
         <h2 class="fw-bold fs-1 mb-3">Ready to unlock your focus?</h2>
         <p class="text-secondary mb-4">Join and start your first Pomodoro session in under 60 seconds.</p>
-        <a href="register.html" class="btn btn-primary btn-lg px-5">
+        <a href="auth/register.html" class="btn btn-primary btn-lg px-5">
             <i class="bi bi-rocket-takeoff me-2"></i>Start for Free
         </a>
     </div>
@@ -342,8 +272,8 @@
         <strong class="text-light">FocusFlow</strong> &copy; 2026
       </span>
         <div class="d-flex gap-3 small">
-            <a href="dashboard.html" class="text-secondary text-decoration-none">Dashboard</a>
-            <a href="tasks.html" class="text-secondary text-decoration-none">Tasks</a>
+            <a href="user/dashboard.html" class="text-secondary text-decoration-none">Dashboard</a>
+            <a href="user/tasks.html" class="text-secondary text-decoration-none">Tasks</a>
             <a href="pomodoro.html" class="text-secondary text-decoration-none">Pomodoro</a>
             <a href="analytics.html" class="text-secondary text-decoration-none">Analytics</a>
             <a href="settings.html" class="text-secondary text-decoration-none">Settings</a>

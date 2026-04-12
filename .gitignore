@@ -12,6 +12,7 @@ target/
 *.log
 
 # Env files
-application-local.properties
+src/main/resources/
+application.properties
 application-dev.properties
 application-secret.properties

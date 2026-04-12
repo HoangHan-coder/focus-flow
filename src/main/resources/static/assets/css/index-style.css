@@ -1,0 +1,70 @@
+/* ── Hero section gradient ── */
+.hero-section {
+    background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+    border-bottom: 1px solid #30363d;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.hero-badge {
+    background-color: rgba(88, 166, 255, 0.15);
+    color: #58a6ff;
+    border: 1px solid rgba(88, 166, 255, 0.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.8rem;
+    display: inline-block;
+    margin-bottom: 1.2rem;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -1px;
+}
+
+.hero-title span {
+    color: #58a6ff;
+}
+
+/* ── Feature cards ── */
+.feature-card {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.feature-card:hover {
+    border-color: #58a6ff;
+    transform: translateY(-4px);
+}
+
+.feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+}
+
+/* ── Stat strip ── */
+.stat-strip {
+    background: #161b22;
+    border-top: 1px solid #30363d;
+    border-bottom: 1px solid #30363d;
+}
+
+body {
+    background-color: #0d1117;
+    color: #c9d1d9;
+}
+
+.navbar-brand span {
+    color: #58a6ff;
+}

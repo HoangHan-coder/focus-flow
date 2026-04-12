@@ -1,4 +1,4 @@
-package dev.focusflow.controllers;
+package dev.focusflow.controllers.user;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +10,6 @@ public class TaskController {
 
     @GetMapping("")
     public String getList() {
-        return "tasks";
+        return "user/tasks";
     }
 }

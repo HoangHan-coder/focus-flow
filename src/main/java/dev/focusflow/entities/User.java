@@ -30,20 +30,18 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus;
 
-    private boolean isDeleted;
 
     private LocalDateTime createAt;
 
     public User() {
     }
 
-    public User(String password, String email, String fullName, Role role, UserStatus userStatus, boolean isDeleted, LocalDateTime createAt) {
+    public User(String password, String email, String fullName, Role role, UserStatus userStatus, LocalDateTime createAt) {
         this.password = password;
         this.email = email;
         this.fullName = fullName;
         this.role = role;
         this.userStatus = userStatus;
-        this.isDeleted = isDeleted;
         this.createAt = createAt;
     }
 
@@ -78,14 +76,6 @@ public class User {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
     }
 
     public Role getRole() {
